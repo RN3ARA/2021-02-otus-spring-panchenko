@@ -7,5 +7,4 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Answer {
     private final String text;
-    private final boolean correct;
 }

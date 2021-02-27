@@ -1,6 +1,7 @@
 package org.hell.homework01.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
