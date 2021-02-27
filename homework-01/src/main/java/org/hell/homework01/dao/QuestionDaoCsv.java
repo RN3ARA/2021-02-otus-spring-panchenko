@@ -7,8 +7,8 @@ import org.hell.homework01.domain.Answer;
 import org.hell.homework01.domain.Question;
 import org.springframework.core.io.Resource;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -25,7 +25,7 @@ public class QuestionDaoCsv implements QuestionDao{
     private List<Question> readCsvResource() {
         List<Question> questions = new ArrayList<>();
         if (csvResource.exists()) {
-            try (CSVReader reader = new CSVReader(new FileReader(csvResource.getFile()))) {
+            try (CSVReader reader = new CSVReader(new InputStreamReader(csvResource.getInputStream()))) {
                 List<String[]> lines = reader.readAll();
                 for (String[] line : lines) {
                     Question question = new Question(line[0], new ArrayList<>());
