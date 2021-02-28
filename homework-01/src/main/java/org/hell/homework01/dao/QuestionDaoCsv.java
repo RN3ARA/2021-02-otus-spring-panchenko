@@ -29,7 +29,7 @@ public class QuestionDaoCsv implements QuestionDao{
                 List<String[]> lines = reader.readAll();
                 for (String[] line : lines) {
                     Question question = new Question(line[0], new ArrayList<>());
-                    IntStream.rangeClosed(1, 3)
+                    IntStream.rangeClosed(1, 4)
                             .forEach(i -> question.getAnswers()
                                     .add(new Answer(line[i])));
                     questions.add(question);
