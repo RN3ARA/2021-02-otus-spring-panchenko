@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 public class ExamServiceImpl implements ExamService {
 
     //Helper methods for console reading/writing
-    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     private void writeMessage(String message) {
         System.out.println(message);
@@ -51,31 +50,32 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private final QuestionDao dao;
-    private Student student;
+    private final Student student;
 
     public ExamServiceImpl(QuestionDao dao) {
         this.dao = dao;
-        student = new Student();
+        this.student = new Student();
     }
 
-    @Override
-    public int calculateResults() {
+    private int calculateResults() {
+        //Getting all correct answers
         int score = 0;
         List<Integer> correctAnswers = dao.findAll().stream()
                 .map(Question::getCorrectAnswer)
                 .collect(Collectors.toList());
+
+        //Getting student's answers and comparing with correct
         Iterator<Integer> correctIterator = correctAnswers.iterator();
         Iterator<Integer> choiceIterator = student.getAnswers().iterator();
         while (correctIterator.hasNext() && choiceIterator.hasNext()) {
-            if (choiceIterator.next() == correctIterator.next()) {
+            if (choiceIterator.next().equals(correctIterator.next())) {
                 score++;
             }
         }
         return score;
     }
 
-    @Override
-    public void getStudentInfo() {
+    private void getStudentInfo() {
         writeMessage("First Name:");
         student.setFirstName(readString());
         writeMessage("Last Name:");
@@ -96,8 +96,7 @@ public class ExamServiceImpl implements ExamService {
         showResults(calculateResults());
     }
 
-    @Override
-    public void showResults(int score) {
-        writeMessage("Your score is " + String.valueOf(score));
+    private void showResults(int score) {
+        writeMessage(String.format("Your score is %s.", score));
     }
 }
