@@ -10,4 +10,6 @@ import java.util.List;
 public class Question {
     private final String text;
     private final List<Answer> answers;
+    private final int correctAnswer;
+
 }
