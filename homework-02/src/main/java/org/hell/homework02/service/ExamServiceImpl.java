@@ -16,44 +16,13 @@ import java.util.stream.Collectors;
 @Service
 public class ExamServiceImpl implements ExamService {
 
-    //Helper methods for console reading/writing
-    private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-    private void writeMessage(String message) {
-        System.out.println(message);
-    }
-
-    private String readString() {
-        String message;
-        while (true) {
-            try {
-                message = reader.readLine();
-                break;
-            } catch (IOException e) {
-                System.out.println("I/O Error!");
-            }
-        }
-        return message;
-    }
-
-    private int readInt() {
-        int i;
-        while (true) {
-            try {
-                i = Integer.parseInt(readString());
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("I/O Error");
-            }
-        }
-        return i;
-    }
-
     private final QuestionDao dao;
+    private final IOService service;
     private final Student student;
 
-    public ExamServiceImpl(QuestionDao dao) {
+    public ExamServiceImpl(QuestionDao dao, IOService service) {
         this.dao = dao;
+        this.service = service;
         this.student = new Student();
     }
 
@@ -76,10 +45,10 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void getStudentInfo() {
-        writeMessage("First Name:");
-        student.setFirstName(readString());
-        writeMessage("Last Name:");
-        student.setLastName(readString());
+        service.writeMessage("First Name:");
+        student.setFirstName(service.readString());
+        service.writeMessage("Last Name:");
+        student.setLastName(service.readString());
     }
 
     @Override
@@ -87,16 +56,16 @@ public class ExamServiceImpl implements ExamService {
         getStudentInfo();
         List<Question> questions = dao.findAll();
         for (Question question : questions) {
-            writeMessage(question.getText());
+            service.writeMessage(question.getText());
             question.getAnswers().stream()
                     .map(Answer::getText)
-                    .forEach(this::writeMessage);
-            student.getAnswers().add(readInt());
+                    .forEach(service::writeMessage);
+            student.getAnswers().add(service.readInt());
         }
         showResults(calculateResults());
     }
 
     private void showResults(int score) {
-        writeMessage(String.format("Your score is %s.", score));
+        service.writeMessage(String.format("Your score is %s.", score));
     }
 }
