@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 @Repository
 public class QuestionDaoCsv implements QuestionDao{
 
-    @Value("${questionCsvPath}")
+    @Value("${application.questionCsvPath}")
     private ClassPathResource csvResource;
 
     @Override
@@ -29,6 +29,7 @@ public class QuestionDaoCsv implements QuestionDao{
         List<Question> questions = new ArrayList<>();
         List<String[]> lines = getLinesFromCsv();
         if (lines != null) {
+            //todo Take this in another method
             for (String[] line : lines) {
                 Question question = new Question(line[0], new ArrayList<>(), Integer.parseInt(line[5]));
                 IntStream.rangeClosed(1, 4)
