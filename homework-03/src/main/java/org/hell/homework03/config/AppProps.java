@@ -8,5 +8,6 @@ import java.util.Locale;
 @Data
 @ConfigurationProperties(prefix = "application")
 public class AppProps {
+    private String questionCsvPath;
     private Locale locale;
 }

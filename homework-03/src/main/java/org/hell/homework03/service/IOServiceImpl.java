@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-//todo Write tests
 @Service
 public class IOServiceImpl implements IOService {
     private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
