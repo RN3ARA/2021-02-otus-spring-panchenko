@@ -1,0 +1,3 @@
+application:
+  questionCsvPath: questions.csv
+  locale: en_US
