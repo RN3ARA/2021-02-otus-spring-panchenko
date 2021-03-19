@@ -33,6 +33,32 @@ public class ExamServiceImpl implements ExamService {
         initMessages();
     }
 
+    @Override
+    public void start() {
+        getStudentInfo();
+        List<Question> questions = dao.findAll();
+        for (int i = 0; i < questions.size(); i++) {
+            Question question = questions.get(i);
+            if (!appProps.getLocale().getLanguage().equals("en")) {
+                ioService.writeMessage(messageSource.getMessage(String.format("questions.question%d", i), null, appProps.getLocale()));
+            } else {
+                ioService.writeMessage(question.getText());
+            }
+            List<Answer> answers = question.getAnswers();
+            for (int j = 0; j < answers.size(); j++) {
+                Answer answer = answers.get(j);
+                if (!appProps.getLocale().getLanguage().equals("en")) {
+                    ioService.writeMessage(messageSource.getMessage(String.format("questions.question%d.answer%d", i, j), null, appProps.getLocale()));
+                } else {
+                    String text = answer.getText();
+                    ioService.writeMessage(text);
+                }
+            }
+            student.getAnswers().add(ioService.readInt());
+        }
+        showResults(calculateResults());
+    }
+
     private void initMessages() {
         firstNameMsg = messageSource.getMessage("messages.firstName", null, appProps.getLocale());
         lastNameMsg = messageSource.getMessage("messages.lastName", null, appProps.getLocale());
@@ -62,32 +88,6 @@ public class ExamServiceImpl implements ExamService {
         student.setFirstName(ioService.readString());
         ioService.writeMessage(lastNameMsg);
         student.setLastName(ioService.readString());
-    }
-
-    @Override
-    public void start() {
-        getStudentInfo();
-        List<Question> questions = dao.findAll();
-        for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.get(i);
-            if (!appProps.getLocale().getLanguage().equals("en")) {
-                ioService.writeMessage(messageSource.getMessage(String.format("questions.question%d", i), null, appProps.getLocale()));
-            } else {
-                ioService.writeMessage(question.getText());
-            }
-            List<Answer> answers = question.getAnswers();
-            for (int j = 0; j < answers.size(); j++) {
-                Answer answer = answers.get(j);
-                if (!appProps.getLocale().getLanguage().equals("en")) {
-                    ioService.writeMessage(messageSource.getMessage(String.format("questions.question%d.answer%d", i, j), null, appProps.getLocale()));
-                } else {
-                    String text = answer.getText();
-                    ioService.writeMessage(text);
-                }
-            }
-            student.getAnswers().add(ioService.readInt());
-        }
-        showResults(calculateResults());
     }
 
     private void showResults(int score) {
