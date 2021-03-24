@@ -65,8 +65,8 @@ class AuthorDaoJdbcTest {
     @Test
     void shouldReturnExpectedAuthorsList() {
         Author expectedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME);
-        List<Author> actualPersonList = authorDao.getAll();
-        assertThat(actualPersonList)
+        List<Author> actualAuthorList = authorDao.getAll();
+        assertThat(actualAuthorList)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expectedAuthor);
     }
