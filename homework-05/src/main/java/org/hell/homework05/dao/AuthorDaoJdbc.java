@@ -37,7 +37,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);
         return jdbc.queryForObject(
-                "select * from authors where id = :id", params, new AuthorMapper()
+                "select id, first_name, last_name from authors where id = :id", params, new AuthorMapper()
         );
     }
 
@@ -48,7 +48,7 @@ public class AuthorDaoJdbc implements AuthorDao {
             params.addValue("first_name", firstName);
             params.addValue("last_name", lastName);
             return jdbc.queryForObject(
-                    "select * from authors where first_name = :first_name and last_name = :last_name", params, new AuthorMapper()
+                    "select id, first_name, last_name from authors where first_name = :first_name and last_name = :last_name", params, new AuthorMapper()
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -57,7 +57,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public List<Author> getAll() {
-        return jdbc.query("select * from authors", new AuthorMapper());
+        return jdbc.query("select id, first_name, last_name from authors", new AuthorMapper());
     }
 
     @Override

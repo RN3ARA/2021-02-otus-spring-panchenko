@@ -37,7 +37,7 @@ public class GenreDaoJdbc implements GenreDao {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);
         return jdbc.queryForObject(
-                "select * from genres where id = :id", params, new GenreMapper()
+                "select id, name from genres where id = :id", params, new GenreMapper()
         );
     }
 
@@ -47,7 +47,7 @@ public class GenreDaoJdbc implements GenreDao {
             MapSqlParameterSource params = new MapSqlParameterSource()
                     .addValue("name", name);
             return jdbc.queryForObject(
-                    "select * from genres where name = :name", params, new GenreMapper()
+                    "select id, name from genres where name = :name", params, new GenreMapper()
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -56,7 +56,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public List<Genre> getAll() {
-        return jdbc.query("select * from genres", new GenreMapper());
+        return jdbc.query("select id, name from genres", new GenreMapper());
     }
 
     @Override
