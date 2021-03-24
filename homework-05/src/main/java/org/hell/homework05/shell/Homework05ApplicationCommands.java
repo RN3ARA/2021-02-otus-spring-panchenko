@@ -35,13 +35,13 @@ public class Homework05ApplicationCommands {
     }
 
     @ShellMethod(key = {"get-all-books"}, value = "Get all books from table")
-    public String getAll() {
+    public String getAllBooks() {
         return bookService.getAll().toString();
     }
 
     @ShellMethod(key = {"update-book"}, value = "Update book in table")
     public String updateBook(@ShellOption(defaultValue = "0") String id,
-            @ShellOption(defaultValue = "First Name") String authorFirstName,
+                             @ShellOption(defaultValue = "First Name") String authorFirstName,
                              @ShellOption(defaultValue = "Last Name") String authorLastName,
                              @ShellOption(defaultValue = "Untitled") String title,
                              @ShellOption(defaultValue = "Unknown") String genre) {
@@ -53,4 +53,8 @@ public class Homework05ApplicationCommands {
         return "Nothing updated.";
     }
 
+    @ShellMethod(key = {"count-books"}, value = "Get count of books in table")
+    public String countBooks() {
+        return String.valueOf(bookService.count());
+    }
 }

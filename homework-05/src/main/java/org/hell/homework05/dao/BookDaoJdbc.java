@@ -37,7 +37,7 @@ public class BookDaoJdbc implements BookDao {
         params.addValue("title", book.getTitle());
         params.addValue("genre_id", genreId);
         KeyHolder kh = new GeneratedKeyHolder();
-        jdbc.update("insert into books (author_id, title, genre_id) values (:author_id, :title, :genre_id)",params, kh, new String[]{"id"});
+        jdbc.update("insert into books (author_id, title, genre_id) values (:author_id, :title, :genre_id)", params, kh, new String[]{"id"});
         return Objects.requireNonNull(kh.getKey()).longValue();
     }
 
@@ -47,10 +47,10 @@ public class BookDaoJdbc implements BookDao {
                 .addValue("id", id);
         return jdbc.queryForObject(
                 "select b.id, a.first_name, a.last_name, b.title, g.name "
-                + "from books as b "
-                + "join authors as a on a.id = b.author_id "
-                + "join genres as g on g.id = b.genre_id "
-                + "where b.id = :id", params, new BookMapper()
+                        + "from books as b "
+                        + "join authors as a on a.id = b.author_id "
+                        + "join genres as g on g.id = b.genre_id "
+                        + "where b.id = :id", params, new BookMapper()
         );
     }
 
@@ -87,6 +87,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public int count() {
+        //Doubtful about this solution. I guess there's something better but I found nothing except some deprecated stuff
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", 0);
         return jdbc.queryForObject("select count(*) from books where id > :id", params, Integer.class);
@@ -97,8 +98,7 @@ public class BookDaoJdbc implements BookDao {
                 book.getAuthor().getLastName());
         if (author == null) {
             return authorDao.insert(new Author(book.getAuthor().getFirstName(), book.getAuthor().getLastName()));
-        }
-        else {
+        } else {
             return author.getId();
         }
     }
@@ -107,8 +107,7 @@ public class BookDaoJdbc implements BookDao {
         Genre genre = genreDao.getByName(book.getGenre().getName());
         if (genre == null) {
             return genreDao.insert(new Genre(book.getGenre().getName()));
-        }
-        else {
+        } else {
             return genre.getId();
         }
     }

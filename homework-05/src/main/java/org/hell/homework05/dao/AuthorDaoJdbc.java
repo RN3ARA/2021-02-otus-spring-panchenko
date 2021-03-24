@@ -28,7 +28,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         params.addValue("first_name", author.getFirstName());
         params.addValue("last_name", author.getLastName());
         KeyHolder kh = new GeneratedKeyHolder();
-        jdbc.update("insert into authors (first_name, last_name) values (:first_name, :last_name)",params, kh, new String[]{"id"});
+        jdbc.update("insert into authors (first_name, last_name) values (:first_name, :last_name)", params, kh, new String[]{"id"});
         return Objects.requireNonNull(kh.getKey()).longValue();
     }
 
@@ -81,6 +81,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public int count() {
+        //Doubtful about this solution. I guess there's something better but I found nothing except some deprecated stuff
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", 0);
         return jdbc.queryForObject("select count(*) from authors where id > :id", params, Integer.class);
