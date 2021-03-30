@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    initialization-mode: never
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/library
+    username: library
+    password: qAF219x
