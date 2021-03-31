@@ -1,46 +1,55 @@
 package org.hell.homework06.service;
 
-import org.hell.homework06.dao.AuthorDao;
-import org.hell.homework06.domain.Author;
+import org.hell.homework06.repository.AuthorRepositoryJpa;
+import org.hell.homework06.model.Author;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class AuthorService {
 
-    private final AuthorDao dao;
+    private final AuthorRepositoryJpa repository;
 
-    public AuthorService(AuthorDao dao) {
-        this.dao = dao;
+    public AuthorService(AuthorRepositoryJpa repository) {
+        this.repository = repository;
     }
 
+    @Transactional(readOnly = true)
     public Author getById(long id) {
-        return dao.getById(id);
+        return repository.getById(id)
+                .orElse(null);
     }
 
-    public List<Author> getAll() {
-        return dao.getAll();
-    }
-
+    @Transactional(readOnly = true)
     public Author getByFullName(String firstName, String lastName) {
-        return dao.getByFullName(firstName, lastName);
+        return repository.getByFullName(firstName, lastName);
     }
 
+    @Transactional(readOnly = true)
+    public List<Author> getAll() {
+        return repository.getAll();
+    }
+
+    @Transactional
     public void deleteById(long id) {
-        dao.deleteById(id);
+        repository.deleteById(id);
     }
 
-    public long insert(Author author) {
-        return dao.insert(author);
+    @Transactional
+    public Author insert(Author author) {
+        return repository.insert(author);
     }
 
+    @Transactional
     public void update(Author author) {
-        dao.update(author);
+        repository.update(author);
     }
 
-    public int count() {
-        return dao.count();
+    @Transactional(readOnly = true)
+    public long count() {
+        return repository.count();
     }
 
 }

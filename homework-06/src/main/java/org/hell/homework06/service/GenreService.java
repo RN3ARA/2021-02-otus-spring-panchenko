@@ -1,46 +1,54 @@
 package org.hell.homework06.service;
 
-import org.hell.homework06.dao.GenreDao;
-import org.hell.homework06.domain.Genre;
+import org.hell.homework06.repository.GenreRepositoryJpa;
+import org.hell.homework06.model.Genre;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class GenreService {
 
-    private final GenreDao dao;
+    private final GenreRepositoryJpa repository;
 
-    public GenreService(GenreDao dao) {
-        this.dao = dao;
+    public GenreService(GenreRepositoryJpa repository) {
+        this.repository = repository;
     }
 
+    @Transactional(readOnly = true)
     public Genre getById(long id) {
-        return dao.getById(id);
+        return repository.getById(id)
+                .orElse(null);
     }
 
-    public List<Genre> getAll() {
-        return dao.getAll();
-    }
-
+    @Transactional(readOnly = true)
     public Genre getByName(String name) {
-        return dao.getByName(name);
+        return repository.getByName(name);
+    }
+    @Transactional(readOnly = true)
+    public List<Genre> getAll() {
+        return repository.getAll();
     }
 
+    @Transactional
     public void deleteById(long id) {
-        dao.deleteById(id);
+        repository.deleteById(id);
     }
 
-    public long insert(Genre genre) {
-        return dao.insert(genre);
+    @Transactional
+    public Genre insert(Genre genre) {
+        return repository.insert(genre);
     }
 
+    @Transactional
     public void update(Genre genre) {
-        dao.update(genre);
+        repository.update(genre);
     }
 
-    public int count() {
-        return dao.count();
+    @Transactional(readOnly = true)
+    public long count() {
+        return repository.count();
     }
 
 }
