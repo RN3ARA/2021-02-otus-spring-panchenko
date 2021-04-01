@@ -11,7 +11,11 @@ import java.util.Optional;
 public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public AuthorRepositoryJpaImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public Author insert(Author author) {

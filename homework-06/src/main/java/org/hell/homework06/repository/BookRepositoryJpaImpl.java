@@ -14,7 +14,11 @@ import java.util.Optional;
 public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public BookRepositoryJpaImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public Book insert(Book book) {

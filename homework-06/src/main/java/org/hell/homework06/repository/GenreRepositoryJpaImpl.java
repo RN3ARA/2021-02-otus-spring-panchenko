@@ -11,7 +11,11 @@ import java.util.Optional;
 public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public GenreRepositoryJpaImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public Genre insert(Genre genre) {
