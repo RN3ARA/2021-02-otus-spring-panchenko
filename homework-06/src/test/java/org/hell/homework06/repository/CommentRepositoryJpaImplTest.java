@@ -17,7 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(CommentRepositoryJpaImpl.class)
 class CommentRepositoryJpaImplTest {
 
-    private static final long EXISTING_COMMENTS_COUNT = 1L;
+    private static final long EXISTING_COMMENTS_COUNT = 3L;
+    private static final long EXISTING_COMMENTS_COUNT_OF_BOOK = 2L;
     private static final long EXISTING_COMMENT_ID = 1L;
     private static final String EXISTING_COMMENT_TEXT = "Amazing.";
     private static final long EXISTING_BOOK_ID = 1L;
@@ -35,6 +36,12 @@ class CommentRepositoryJpaImplTest {
     }
 
     @Test
+    void shouldReturnExpectedCommentsCountOfBook() {
+        long actualCommentsCount = repositoryJpa.countByBookId(EXISTING_BOOK_ID);
+        assertThat(actualCommentsCount).isEqualTo(EXISTING_COMMENTS_COUNT_OF_BOOK);
+    }
+
+    @Test
     void shouldReturnExpectedCommentById() {
         Comment expectedComment = entityManager.find(Comment.class, EXISTING_COMMENT_ID);
         Optional<Comment> actualComment = repositoryJpa.findById(EXISTING_COMMENT_ID);
@@ -49,7 +56,17 @@ class CommentRepositoryJpaImplTest {
         List<Comment> actualCommentList = repositoryJpa.findAll();
         assertThat(actualCommentList)
                 .usingFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(expectedComment);
+                .contains(expectedComment);
+    }
+
+    @Test
+    void shouldReturnExpectedCommentListOfBook() {
+        Book book = entityManager.find(Book.class, EXISTING_BOOK_ID);
+        Comment expectedComment = new Comment(EXISTING_COMMENT_ID, book, EXISTING_COMMENT_TEXT);
+        List<Comment> actualCommentList = repositoryJpa.findAllByBookId(EXISTING_BOOK_ID);
+        assertThat(actualCommentList)
+                .usingFieldByFieldElementComparator()
+                .contains(expectedComment);
     }
 
     @Test

@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 @Import(BookRepositoryJpaImpl.class)
 class BookRepositoryJpaImplTest {
 
-    private static final long EXISTING_BOOKS_COUNT = 1L;
+    private static final long EXISTING_BOOKS_COUNT = 2L;
     private static final long EXISTING_BOOK_ID = 1L;
 
     @Autowired
@@ -45,7 +45,7 @@ class BookRepositoryJpaImplTest {
         List<Book> actualBookList = repositoryJpa.findAll();
         assertThat(actualBookList)
                 .usingFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(expectedBook);
+                .contains(expectedBook);
     }
 
     @Test
