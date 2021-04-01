@@ -22,3 +22,10 @@ CREATE TABLE books
     title     VARCHAR(50) NOT NULL,
     genre_id  BIGINT      NOT NULL REFERENCES genres (id) ON DELETE CASCADE
 );
+
+CREATE TABLE comments
+(
+    id   BIGSERIAL PRIMARY KEY,
+    text VARCHAR(250) NOT NULL,
+    book_id  BIGINT      NOT NULL REFERENCES books (id) ON DELETE CASCADE
+);

@@ -2,7 +2,6 @@ package org.hell.homework06.repository;
 
 import org.hell.homework06.model.Author;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
