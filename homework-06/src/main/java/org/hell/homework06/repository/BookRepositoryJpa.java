@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface BookRepositoryJpa {
 
-    Book insert(Book book);
+    Book save(Book book);
 
-    Optional<Book> getById(long id);
+    Optional<Book> findById(long id);
 
-    List<Book> getAll();
+    List<Book> findAll();
 
     void update(Book book);
 

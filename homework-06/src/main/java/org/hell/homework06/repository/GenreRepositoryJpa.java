@@ -7,12 +7,12 @@ import java.util.Optional;
 
 public interface GenreRepositoryJpa {
 
-    Genre insert(Genre genre);
+    Genre save(Genre genre);
 
-    Optional<Genre> getById(long id);
+    Optional<Genre> findById(long id);
 
-    Genre getByName(String name);
-    List<Genre> getAll();
+    Genre findByName(String name);
+    List<Genre> findAll();
 
     void update(Genre genre);
 

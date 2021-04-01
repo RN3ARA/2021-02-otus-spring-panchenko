@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface AuthorRepositoryJpa {
 
-    Author insert(Author author);
+    Author save(Author author);
 
-    Optional<Author> getById(long id);
+    Optional<Author> findById(long id);
 
-    Author getByFullName(String firstName, String lastName);
+    Author findByFullName(String firstName, String lastName);
 
-    List<Author> getAll();
+    List<Author> findAll();
 
     void update(Author author);
 

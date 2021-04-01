@@ -36,8 +36,8 @@ class AuthorRepositoryJpaImplTest {
     @Test
     void shouldInsertAuthor() {
         Author expectedAuthor = new Author(2L, "Guanzhong", "Lo");
-        repositoryJpa.insert(expectedAuthor);
-        Optional<Author> actualAuthor = repositoryJpa.getById(expectedAuthor.getId());
+        repositoryJpa.save(expectedAuthor);
+        Optional<Author> actualAuthor = repositoryJpa.findById(expectedAuthor.getId());
         assertThat(actualAuthor).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
@@ -45,7 +45,7 @@ class AuthorRepositoryJpaImplTest {
     @Test
     void shouldReturnExpectedAuthorById() {
         Author expectedAuthor = entityManager.find(Author.class, EXISTING_AUTHOR_ID);
-        Optional<Author> actualAuthor = repositoryJpa.getById(EXISTING_AUTHOR_ID);
+        Optional<Author> actualAuthor = repositoryJpa.findById(EXISTING_AUTHOR_ID);
         assertThat(actualAuthor).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
@@ -53,14 +53,14 @@ class AuthorRepositoryJpaImplTest {
     @Test
     void shouldReturnExpectedAuthorByFirstNameAndLastName() {
         Author expectedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME);
-        Author actualAuthor = repositoryJpa.getByFullName(expectedAuthor.getFirstName(), expectedAuthor.getLastName());
+        Author actualAuthor = repositoryJpa.findByFullName(expectedAuthor.getFirstName(), expectedAuthor.getLastName());
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(expectedAuthor);
     }
 
     @Test
     void shouldReturnExpectedAuthorsList() {
         Author expectedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME);
-        List<Author> actualAuthorList = repositoryJpa.getAll();
+        List<Author> actualAuthorList = repositoryJpa.findAll();
         assertThat(actualAuthorList)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expectedAuthor);

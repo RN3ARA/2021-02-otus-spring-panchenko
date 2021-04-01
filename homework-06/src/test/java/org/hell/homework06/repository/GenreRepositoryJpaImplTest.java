@@ -35,7 +35,7 @@ class GenreRepositoryJpaImplTest {
     @Test
     void shouldInsertGenre() {
         Genre expectedGenre = new Genre(2, "unknown");
-        repositoryJpa.insert(expectedGenre);
+        repositoryJpa.save(expectedGenre);
         Genre actualGenre = entityManager.find(Genre.class, expectedGenre.getId());
         assertThat(actualGenre).usingRecursiveComparison().isEqualTo(expectedGenre);
     }
@@ -43,7 +43,7 @@ class GenreRepositoryJpaImplTest {
     @Test
     void shouldReturnExpectedGenreById() {
         Genre expectedGenre = entityManager.find(Genre.class, EXISTING_GENRE_ID);
-        Optional<Genre> actualGenre = repositoryJpa.getById(EXISTING_GENRE_ID);
+        Optional<Genre> actualGenre = repositoryJpa.findById(EXISTING_GENRE_ID);
         assertThat(actualGenre).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expectedGenre);
     }
@@ -51,14 +51,14 @@ class GenreRepositoryJpaImplTest {
     @Test
     void shouldReturnExpectedGenreByName() {
         Genre expectedGenre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_NAME);
-        Genre actualGenre = repositoryJpa.getByName(expectedGenre.getName());
+        Genre actualGenre = repositoryJpa.findByName(expectedGenre.getName());
         assertThat(actualGenre).usingRecursiveComparison().isEqualTo(expectedGenre);
     }
 
     @Test
     void shouldReturnExpectedGenreList() {
         Genre expectedGenre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_NAME);
-        List<Genre> actualGenreList = repositoryJpa.getAll();
+        List<Genre> actualGenreList = repositoryJpa.findAll();
         assertThat(actualGenreList)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expectedGenre);

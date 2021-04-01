@@ -18,7 +18,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
     }
 
     @Override
-    public Genre insert(Genre genre) {
+    public Genre save(Genre genre) {
         if (genre.getId() <= 0) {
             entityManager.persist(genre);
             return genre;
@@ -28,12 +28,12 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
     }
 
     @Override
-    public Optional<Genre> getById(long id) {
+    public Optional<Genre> findById(long id) {
         return Optional.ofNullable(entityManager.find(Genre.class, id));
     }
 
     @Override
-    public Genre getByName(String name) {
+    public Genre findByName(String name) {
         TypedQuery<Genre> query = entityManager.createQuery(
                 "select g from Genre g " +
                         "where g.name = :name", Genre.class);
@@ -46,7 +46,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
     }
 
     @Override
-    public List<Genre> getAll() {
+    public List<Genre> findAll() {
         TypedQuery<Genre> query = entityManager.createQuery("select g from Genre g", Genre.class);
         return query.getResultList();
     }

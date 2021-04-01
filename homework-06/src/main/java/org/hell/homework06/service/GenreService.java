@@ -17,18 +17,19 @@ public class GenreService {
     }
 
     @Transactional(readOnly = true)
-    public Genre getById(long id) {
-        return repository.getById(id)
+    public Genre findById(long id) {
+        return repository.findById(id)
                 .orElse(null);
     }
 
     @Transactional(readOnly = true)
-    public Genre getByName(String name) {
-        return repository.getByName(name);
+    public Genre findByName(String name) {
+        return repository.findByName(name);
     }
+
     @Transactional(readOnly = true)
-    public List<Genre> getAll() {
-        return repository.getAll();
+    public List<Genre> findAll() {
+        return repository.findAll();
     }
 
     @Transactional
@@ -37,8 +38,8 @@ public class GenreService {
     }
 
     @Transactional
-    public Genre insert(Genre genre) {
-        return repository.insert(genre);
+    public Genre save(Genre genre) {
+        return repository.save(genre);
     }
 
     @Transactional

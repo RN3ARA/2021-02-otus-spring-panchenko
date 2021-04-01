@@ -18,7 +18,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
-    public Author insert(Author author) {
+    public Author save(Author author) {
         if (author.getId() <= 0) {
             entityManager.persist(author);
             return author;
@@ -28,12 +28,12 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
-    public Optional<Author> getById(long id) {
+    public Optional<Author> findById(long id) {
         return Optional.ofNullable(entityManager.find(Author.class, id));
     }
 
     @Override
-    public Author getByFullName(String firstName, String lastName) {
+    public Author findByFullName(String firstName, String lastName) {
         TypedQuery<Author> query = entityManager.createQuery(
                 "select a from Author a " +
                         "where a.firstName = :firstName and a.lastName = :lastName", Author.class);
@@ -47,7 +47,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
-    public List<Author> getAll() {
+    public List<Author> findAll() {
         TypedQuery<Author> query = entityManager.createQuery("select a from Author a", Author.class);
         return query.getResultList();
     }

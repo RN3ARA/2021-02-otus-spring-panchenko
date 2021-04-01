@@ -3,9 +3,11 @@ package org.hell.homework06.shell;
 import lombok.RequiredArgsConstructor;
 import org.hell.homework06.model.Author;
 import org.hell.homework06.model.Book;
+import org.hell.homework06.model.Comment;
 import org.hell.homework06.model.Genre;
 import org.hell.homework06.service.AuthorService;
 import org.hell.homework06.service.BookService;
+import org.hell.homework06.service.CommentService;
 import org.hell.homework06.service.GenreService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -18,13 +20,14 @@ public class Homework06ApplicationCommands {
     private final BookService bookService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final CommentService commentService;
 
     @ShellMethod(key = {"insert-book"}, value = "Insert book into table")
     public String insertBook(@ShellOption(defaultValue = "First Name") String authorFirstName,
                              @ShellOption(defaultValue = "Last Name") String authorLastName,
                              @ShellOption(defaultValue = "Untitled") String title,
                              @ShellOption(defaultValue = "Unknown") String genre) {
-        long id = bookService.insert(new Book(new Author(authorFirstName, authorLastName), title, new Genre(genre)))
+        long id = bookService.save(new Book(new Author(authorFirstName, authorLastName), title, new Genre(genre)))
                 .getId();
         return String.format("Inserted book with id %d", id);
     }
@@ -36,18 +39,18 @@ public class Homework06ApplicationCommands {
 
     @ShellMethod(key = {"get-book"}, value = "Get book from table by its Id")
     public String getBook(@ShellOption(defaultValue = "0") String id) {
-        return bookService.getById(Long.parseLong(id)).toString();
+        return bookService.findById(Long.parseLong(id)).toString();
     }
 
     @ShellMethod(key = {"get-all-books"}, value = "Get all books from table")
     public String getAllBooks() {
-        return bookService.getAll().toString();
+        return bookService.findAll().toString();
     }
 
     @ShellMethod(key = {"update-book"}, value = "Update book in table")
     public String updateBook(@ShellOption(defaultValue = "0") String id,
                              @ShellOption(defaultValue = "Untitled") String title) {
-        Book bookForUpdate = bookService.getById(Long.parseLong(id));
+        Book bookForUpdate = bookService.findById(Long.parseLong(id));
         if (bookForUpdate != null) {
             bookForUpdate.setTitle(title);
             bookService.update(bookForUpdate);
@@ -64,7 +67,7 @@ public class Homework06ApplicationCommands {
     @ShellMethod(key = {"insert-author"}, value = "Insert author into table")
     public String insertAuthor(@ShellOption(defaultValue = "First Name") String firstName,
                              @ShellOption(defaultValue = "Last Name") String lastName) {
-        long id = authorService.insert(new Author(firstName, lastName))
+        long id = authorService.save(new Author(firstName, lastName))
                 .getId();
         return String.format("Inserted author with id %d", id);
     }
@@ -76,21 +79,23 @@ public class Homework06ApplicationCommands {
 
     @ShellMethod(key = {"get-author"}, value = "Get author from table by its Id")
     public String getAuthor(@ShellOption(defaultValue = "0") String id) {
-        return authorService.getById(Long.parseLong(id)).toString();
+        return authorService.findById(Long.parseLong(id)).toString();
     }
 
     @ShellMethod(key = {"get-all-authors"}, value = "Get all authors from table")
     public String getAllAuthors() {
-        return authorService.getAll().toString();
+        return authorService.findAll().toString();
     }
 
     @ShellMethod(key = {"update-author"}, value = "Update author in table")
     public String updateAuthor(@ShellOption(defaultValue = "0") String id,
                              @ShellOption(defaultValue = "First Name") String firstName,
                              @ShellOption(defaultValue = "Last Name") String lastName) {
-        Author foundAuthor = authorService.getById(Long.parseLong(id));
-        if (foundAuthor != null) {
-            authorService.update(new Author(foundAuthor.getId(), firstName, lastName));
+        Author authorForUpdate = authorService.findById(Long.parseLong(id));
+        if (authorForUpdate != null) {
+            authorForUpdate.setFirstName(firstName);
+            authorForUpdate.setLastName(lastName);
+            authorService.update(authorForUpdate);
             return String.format("Updated author with id %s", id);
         }
         return "Nothing updated.";
@@ -103,7 +108,7 @@ public class Homework06ApplicationCommands {
 
     @ShellMethod(key = {"insert-genre"}, value = "Insert genre into table")
     public String insertGenre(@ShellOption(defaultValue = "Name") String name) {
-        long id = genreService.insert(new Genre(name)).getId();
+        long id = genreService.save(new Genre(name)).getId();
         return String.format("Inserted genre with id %d", id);
     }
 
@@ -114,20 +119,21 @@ public class Homework06ApplicationCommands {
 
     @ShellMethod(key = {"get-genre"}, value = "Get genre from table by its Id")
     public String getGenre(@ShellOption(defaultValue = "0") String id) {
-        return genreService.getById(Long.parseLong(id)).toString();
+        return genreService.findById(Long.parseLong(id)).toString();
     }
 
     @ShellMethod(key = {"get-all-genres"}, value = "Get all genres from table")
     public String getAllGenres() {
-        return genreService.getAll().toString();
+        return genreService.findAll().toString();
     }
 
     @ShellMethod(key = {"update-genre"}, value = "Update genre in table")
     public String updateGenre(@ShellOption(defaultValue = "0") String id,
                              @ShellOption(defaultValue = "Name") String name) {
-        Genre foundGenre = genreService.getById(Long.parseLong(id));
-        if (foundGenre != null) {
-            genreService.update(new Genre(foundGenre.getId(), name));
+        Genre genreForUpdate = genreService.findById(Long.parseLong(id));
+        if (genreForUpdate != null) {
+            genreForUpdate.setName(name);
+            genreService.update(genreForUpdate);
             return String.format("Updated genre with id %s", id);
         }
         return "Nothing updated.";
@@ -136,6 +142,60 @@ public class Homework06ApplicationCommands {
     @ShellMethod(key = {"count-genres"}, value = "Get count of genres in table")
     public String countGenres() {
         return String.valueOf(genreService.count());
+    }
+
+    @ShellMethod(key = {"insert-comment"}, value = "Insert comment into table")
+    public String insertComment(@ShellOption(defaultValue = "0") String bookId,
+                                @ShellOption(defaultValue = "Something") String text) {
+        Book bookToComment = bookService.findById(Long.parseLong(bookId));
+        if (bookToComment != null) {
+            long id = commentService.save(new Comment(bookToComment, text))
+                    .getId();
+            return String.format("Inserted comment with id %d", id);
+        }
+        return "Nothing commented";
+    }
+
+    @ShellMethod(key = {"delete-comment"}, value = "Delete comment from table")
+    public void deleteComment(@ShellOption(defaultValue = "0") String id) {
+        commentService.deleteById(Long.parseLong(id));
+    }
+
+    @ShellMethod(key = {"get-comment"}, value = "Get comment from table by its Id")
+    public String getComment(@ShellOption(defaultValue = "0") String id) {
+        return commentService.findById(Long.parseLong(id)).toString();
+    }
+
+    @ShellMethod(key = {"get-all-comments"}, value = "Get all comments from table")
+    public String getAllComments() {
+        return commentService.findAll().toString();
+    }
+
+    @ShellMethod(key = {"update-comment"}, value = "Update comment in table")
+    public String updateComment(@ShellOption(defaultValue = "0") String id,
+                              @ShellOption(defaultValue = "something") String text) {
+        Comment commentForUpdate = commentService.findById(Long.parseLong(id));
+        if (commentForUpdate != null) {
+            commentForUpdate.setText(text);
+            commentService.update(commentForUpdate);
+            return String.format("Updated comment with id %s", id);
+        }
+        return "Nothing updated.";
+    }
+
+    @ShellMethod(key = {"count-comments"}, value = "Get count of comments in table")
+    public String countComments() {
+        return String.valueOf(commentService.count());
+    }
+
+    @ShellMethod(key = {"get-all-book-comments"}, value = "Get all book comments from table by its id")
+    public String getAllComments(@ShellOption (defaultValue = "0") String id) {
+        return commentService.findAllByBookId(Long.parseLong(id)).toString();
+    }
+
+    @ShellMethod(key = {"count-book-comments"}, value = "Get count of book comments in table by its id")
+    public String countComments(@ShellOption(defaultValue = "0") String id) {
+        return String.valueOf(commentService.countByBookId(Long.parseLong(id)));
     }
 
 }

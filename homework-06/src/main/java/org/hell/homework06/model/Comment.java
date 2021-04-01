@@ -22,4 +22,9 @@ public class Comment {
 
     @Column(name = "text")
     private String text;
+
+    public Comment(Book book, String text) {
+        this.book = book;
+        this.text = text;
+    }
 }

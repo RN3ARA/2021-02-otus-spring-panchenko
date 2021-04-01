@@ -23,14 +23,14 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Book getById(long id) {
-        return repository.getById(id)
+    public Book findById(long id) {
+        return repository.findById(id)
                 .orElse(null);
     }
 
     @Transactional(readOnly = true)
-    public List<Book> getAll() {
-        return repository.getAll();
+    public List<Book> findAll() {
+        return repository.findAll();
     }
 
     @Transactional
@@ -39,10 +39,10 @@ public class BookService {
     }
 
     @Transactional
-    public Book insert(Book book) {
+    public Book save(Book book) {
         checkForAuthor(book);
         checkForGenre(book);
-        return repository.insert(book);
+        return repository.save(book);
     }
 
     @Transactional
@@ -56,19 +56,19 @@ public class BookService {
     }
 
     private void checkForGenre(Book book) {
-        Genre genre = genreService.getByName(book.getGenre().getName());
+        Genre genre = genreService.findByName(book.getGenre().getName());
         if (genre == null) {
-            book.getGenre().setId(genreService.insert(book.getGenre()).getId());
+            book.getGenre().setId(genreService.save(book.getGenre()).getId());
         } else {
             book.getGenre().setId(genre.getId());
         }
     }
 
     private void checkForAuthor(Book book) {
-        Author author = authorService.getByFullName(
+        Author author = authorService.findByFullName(
                 book.getAuthor().getFirstName(), book.getAuthor().getLastName());
         if (author == null) {
-            book.getAuthor().setId(authorService.insert(book.getAuthor()).getId());
+            book.getAuthor().setId(authorService.save(book.getAuthor()).getId());
         } else {
             book.getAuthor().setId(author.getId());
         }

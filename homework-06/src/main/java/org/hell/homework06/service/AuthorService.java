@@ -17,19 +17,19 @@ public class AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public Author getById(long id) {
-        return repository.getById(id)
+    public Author findById(long id) {
+        return repository.findById(id)
                 .orElse(null);
     }
 
     @Transactional(readOnly = true)
-    public Author getByFullName(String firstName, String lastName) {
-        return repository.getByFullName(firstName, lastName);
+    public Author findByFullName(String firstName, String lastName) {
+        return repository.findByFullName(firstName, lastName);
     }
 
     @Transactional(readOnly = true)
-    public List<Author> getAll() {
-        return repository.getAll();
+    public List<Author> findAll() {
+        return repository.findAll();
     }
 
     @Transactional
@@ -38,8 +38,8 @@ public class AuthorService {
     }
 
     @Transactional
-    public Author insert(Author author) {
-        return repository.insert(author);
+    public Author save(Author author) {
+        return repository.save(author);
     }
 
     @Transactional

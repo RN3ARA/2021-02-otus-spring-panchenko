@@ -21,7 +21,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
     }
 
     @Override
-    public Book insert(Book book) {
+    public Book save(Book book) {
         if (book.getId() <= 0) {
             entityManager.persist(book);
             return book;
@@ -31,12 +31,12 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
     }
 
     @Override
-    public Optional<Book> getById(long id) {
+    public Optional<Book> findById(long id) {
         return Optional.ofNullable(entityManager.find(Book.class, id));
     }
 
     @Override
-    public List<Book> getAll() {
+    public List<Book> findAll() {
         TypedQuery<Book> query = entityManager.createQuery("select b from Book b", Book.class);
         return query.getResultList();
     }
