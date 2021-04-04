@@ -14,8 +14,6 @@ public interface CommentRepositoryJpa {
     List<Comment> findAll();
     List<Comment> findAllByBookId(long bookId);
 
-    void update(Comment comment);
-
     void deleteById(long id);
 
     long countByBookId(long bookId);

@@ -22,13 +22,13 @@ public class BookService {
         this.genreService = genreService;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Book findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Book> findAll() {
         return repository.findAll();
     }
@@ -47,10 +47,10 @@ public class BookService {
 
     @Transactional
     public void update(Book book) {
-        repository.update(book);
+        repository.save(book);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public long count() {
         return repository.count();
     }

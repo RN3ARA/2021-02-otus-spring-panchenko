@@ -16,18 +16,18 @@ public class CommentService {
         this.repository = repository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Comment findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Comment> findAll() {
         return repository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Comment> findAllByBookId(long bookId) {
         return repository.findAllByBookId(bookId);
     }
@@ -44,15 +44,15 @@ public class CommentService {
 
     @Transactional
     public void update(Comment comment) {
-        repository.update(comment);
+        repository.save(comment);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public long count() {
         return repository.count();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public long countByBookId(long bookId) {
         return repository.countByBookId(bookId);
     }

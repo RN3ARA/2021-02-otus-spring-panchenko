@@ -50,22 +50,13 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
     }
 
     @Override
-    public void update(Comment comment) {
-        Query query = entityManager.createQuery("update Comment c " +
-                "set c.text = :text " +
-                "where c.id = :id");
-        query.setParameter("text", comment.getText());
-        query.setParameter("id", comment.getId());
-        query.executeUpdate();
-    }
-
-    @Override
     public void deleteById(long id) {
-        Query query = entityManager.createQuery("delete " +
-                "from Comment c " +
-                "where c.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Comment comment = entityManager.find(Comment.class, id);
+        if (comment != null) {
+            entityManager.remove(comment);
+            entityManager.flush();
+            entityManager.clear();
+        }
     }
 
     @Override

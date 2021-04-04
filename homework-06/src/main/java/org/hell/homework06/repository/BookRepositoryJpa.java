@@ -13,8 +13,6 @@ public interface BookRepositoryJpa {
 
     List<Book> findAll();
 
-    void update(Book book);
-
     void deleteById(long id);
 
     long count();

@@ -53,24 +53,13 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
-    public void update(Author author) {
-        Query query = entityManager.createQuery("update Author a " +
-                "set a.firstName = :firstName, " +
-                "a.lastName = :lastName " +
-                "where a.id = :id");
-        query.setParameter("firstName", author.getFirstName());
-        query.setParameter("lastName", author.getLastName());
-        query.setParameter("id", author.getId());
-        query.executeUpdate();
-    }
-
-    @Override
     public void deleteById(long id) {
-        Query query = entityManager.createQuery("delete " +
-                "from Author a " +
-        "where a.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Author author = entityManager.find(Author.class, id);
+        if (author != null) {
+            entityManager.remove(author);
+            entityManager.flush();
+            entityManager.clear();
+        }
     }
 
     @Override

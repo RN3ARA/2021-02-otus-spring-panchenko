@@ -16,18 +16,18 @@ public class GenreService {
         this.repository = repository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Genre findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Genre findByName(String name) {
         return repository.findByName(name);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Genre> findAll() {
         return repository.findAll();
     }
@@ -43,11 +43,11 @@ public class GenreService {
     }
 
     @Transactional
-    public void update(Genre genre) {
-        repository.update(genre);
+   public void update(Genre genre) {
+        repository.save(genre);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public long count() {
         return repository.count();
     }

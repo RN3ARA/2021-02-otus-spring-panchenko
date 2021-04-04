@@ -52,22 +52,13 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
     }
 
     @Override
-    public void update(Genre genre) {
-        Query query = entityManager.createQuery("update Genre g " +
-                "set g.name = :name " +
-                "where g.id = :id");
-        query.setParameter("name", genre.getName());
-        query.setParameter("id", genre.getId());
-        query.executeUpdate();
-    }
-
-    @Override
     public void deleteById(long id) {
-        Query query = entityManager.createQuery("delete " +
-                "from Genre g " +
-                "where g.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Genre genre = entityManager.find(Genre.class, id);
+        if (genre != null) {
+            entityManager.remove(genre);
+            entityManager.flush();
+            entityManager.clear();
+        }
     }
 
     @Override
