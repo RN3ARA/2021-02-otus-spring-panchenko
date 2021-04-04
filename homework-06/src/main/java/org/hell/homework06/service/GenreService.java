@@ -1,55 +1,23 @@
 package org.hell.homework06.service;
 
-import org.hell.homework06.repository.GenreRepositoryJpa;
 import org.hell.homework06.model.Genre;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public class GenreService {
+public interface GenreService {
 
-    private final GenreRepositoryJpa repository;
+    Genre findById(long id);
 
-    public GenreService(GenreRepositoryJpa repository) {
-        this.repository = repository;
-    }
+    Genre findByName(String name);
 
-    @Transactional
-    public Genre findById(long id) {
-        return repository.findById(id)
-                .orElse(null);
-    }
+    List<Genre> findAll();
 
-    @Transactional
-    public Genre findByName(String name) {
-        return repository.findByName(name);
-    }
+    void deleteById(long id);
 
-    @Transactional
-    public List<Genre> findAll() {
-        return repository.findAll();
-    }
+    Genre save(Genre genre);
 
-    @Transactional
-    public void deleteById(long id) {
-        repository.deleteById(id);
-    }
+    void update(Genre genre);
 
-    @Transactional
-    public Genre save(Genre genre) {
-        return repository.save(genre);
-    }
-
-    @Transactional
-   public void update(Genre genre) {
-        repository.save(genre);
-    }
-
-    @Transactional
-    public long count() {
-        return repository.count();
-    }
-
+    long count();
 }
