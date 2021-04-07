@@ -1,9 +1,7 @@
 package org.hell.homework06.service;
 
-import org.hell.homework06.model.Author;
 import org.hell.homework06.model.Book;
-import org.hell.homework06.model.Genre;
-import org.springframework.transaction.annotation.Transactional;
+import org.hell.homework06.model.Comment;
 
 import java.util.List;
 

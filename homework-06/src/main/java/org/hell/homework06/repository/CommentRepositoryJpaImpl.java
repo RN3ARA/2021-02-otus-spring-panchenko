@@ -3,9 +3,9 @@ package org.hell.homework06.repository;
 import org.hell.homework06.model.Comment;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -42,14 +42,6 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
     }
 
     @Override
-    public List<Comment> findAllByBookId(long bookId) {
-        TypedQuery<Comment> query = entityManager.createQuery("select c from Comment c " +
-                "where c.book.id = :bookId", Comment.class);
-        query.setParameter("bookId", bookId);
-        return query.getResultList();
-    }
-
-    @Override
     public void deleteById(long id) {
         Comment comment = entityManager.find(Comment.class, id);
         if (comment != null) {
@@ -61,7 +53,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
     public long countByBookId(long bookId) {
         TypedQuery<Long> query = entityManager.createQuery(
                 "select count(c) from Comment c " +
-                "where c.book.id = :bookId", Long.class);
+                "where c.bookId = :bookId", Long.class);
         query.setParameter("bookId", bookId);
         return query.getSingleResult();
     }

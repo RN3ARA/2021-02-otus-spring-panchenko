@@ -1,6 +1,7 @@
 package org.hell.homework06.service;
 
 import org.hell.homework06.model.Author;
+import org.hell.homework06.model.Comment;
 import org.hell.homework06.model.Genre;
 import org.hell.homework06.repository.BookRepositoryJpa;
 import org.hell.homework06.model.Book;

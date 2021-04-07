@@ -1,5 +1,6 @@
 package org.hell.homework06.service;
 
+import org.hell.homework06.model.Book;
 import org.hell.homework06.model.Comment;
 import org.hell.homework06.repository.CommentRepositoryJpa;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepositoryJpa repository;
+    private final BookService bookService;
 
-    public CommentServiceImpl(CommentRepositoryJpa repository) {
+    public CommentServiceImpl(CommentRepositoryJpa repository, BookService bookService) {
         this.repository = repository;
+        this.bookService = bookService;
     }
 
     @Override
@@ -29,7 +32,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> findAllByBookId(long bookId) {
-        return repository.findAllByBookId(bookId);
+        Book book = bookService.findById(bookId);
+        if (book != null) {
+            return book.getComments();
+        }
+        return null;
     }
 
     @Override

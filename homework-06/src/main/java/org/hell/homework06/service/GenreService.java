@@ -1,7 +1,6 @@
 package org.hell.homework06.service;
 
 import org.hell.homework06.model.Genre;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

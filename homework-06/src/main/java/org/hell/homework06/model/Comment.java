@@ -16,15 +16,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    private Book book;
+    @Column(name = "book_id")
+    private long bookId;
 
     @Column(name = "text")
     private String text;
 
-    public Comment(Book book, String text) {
-        this.book = book;
+    public Comment(long bookId, String text) {
+        this.bookId = bookId;
         this.text = text;
     }
 }
