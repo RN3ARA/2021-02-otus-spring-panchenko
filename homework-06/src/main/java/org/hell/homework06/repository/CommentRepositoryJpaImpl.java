@@ -54,8 +54,6 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
         Comment comment = entityManager.find(Comment.class, id);
         if (comment != null) {
             entityManager.remove(comment);
-            entityManager.flush();
-            entityManager.clear();
         }
     }
 

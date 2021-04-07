@@ -57,8 +57,6 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
         Author author = entityManager.find(Author.class, id);
         if (author != null) {
             entityManager.remove(author);
-            entityManager.flush();
-            entityManager.clear();
         }
     }
 

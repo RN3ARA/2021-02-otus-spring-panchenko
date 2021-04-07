@@ -46,8 +46,6 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
         Book book = entityManager.find(Book.class, id);
         if (book != null) {
             entityManager.remove(book);
-            entityManager.flush();
-            entityManager.clear();
         }
     }
 

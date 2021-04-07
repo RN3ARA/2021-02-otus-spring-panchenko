@@ -23,14 +23,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public Book findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
     @Override
-    @Transactional
     public List<Book> findAll() {
         return repository.findAll();
     }
@@ -56,7 +54,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public long count() {
         return repository.count();
     }

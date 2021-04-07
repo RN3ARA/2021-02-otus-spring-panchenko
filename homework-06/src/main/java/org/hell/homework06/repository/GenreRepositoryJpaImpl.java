@@ -56,8 +56,6 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
         Genre genre = entityManager.find(Genre.class, id);
         if (genre != null) {
             entityManager.remove(genre);
-            entityManager.flush();
-            entityManager.clear();
         }
     }
 

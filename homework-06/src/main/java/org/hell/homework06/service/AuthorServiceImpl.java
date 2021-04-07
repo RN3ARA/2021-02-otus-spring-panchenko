@@ -17,20 +17,17 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    @Transactional
     public Author findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
     @Override
-    @Transactional
     public Author findByFullName(String firstName, String lastName) {
         return repository.findByFullName(firstName, lastName);
     }
 
     @Override
-    @Transactional
     public List<Author> findAll() {
         return repository.findAll();
     }
@@ -54,7 +51,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    @Transactional
     public long count() {
         return repository.count();
     }

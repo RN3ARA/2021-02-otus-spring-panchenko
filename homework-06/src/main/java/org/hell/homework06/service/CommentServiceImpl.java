@@ -17,20 +17,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
     public Comment findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
     @Override
-    @Transactional
     public List<Comment> findAll() {
         return repository.findAll();
     }
 
     @Override
-    @Transactional
     public List<Comment> findAllByBookId(long bookId) {
         return repository.findAllByBookId(bookId);
     }
@@ -54,13 +51,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
     public long count() {
         return repository.count();
     }
 
     @Override
-    @Transactional
     public long countByBookId(long bookId) {
         return repository.countByBookId(bookId);
     }
