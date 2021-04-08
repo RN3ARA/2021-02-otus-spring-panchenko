@@ -146,7 +146,7 @@ public class Homework06ApplicationCommands {
                                 @ShellOption(defaultValue = "Something") String text) {
         Book bookToComment = bookService.findById(Long.parseLong(bookId));
         if (bookToComment != null) {
-            long id = commentService.save(new Comment(bookToComment.getId(), text))
+            long id = commentService.save(new Comment(bookToComment, text))
                     .getId();
             return String.format("Inserted comment with id %d", id);
         }

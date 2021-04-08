@@ -52,7 +52,7 @@ class CommentRepositoryJpaImplTest {
     @Test
     void shouldReturnExpectedCommentList() {
         Book book = entityManager.find(Book.class, EXISTING_BOOK_ID);
-        Comment expectedComment = new Comment(EXISTING_COMMENT_ID, book.getId(), EXISTING_COMMENT_TEXT);
+        Comment expectedComment = new Comment(EXISTING_COMMENT_ID, book, EXISTING_COMMENT_TEXT);
         List<Comment> actualCommentList = repositoryJpa.findAll();
         assertThat(actualCommentList)
                 .usingFieldByFieldElementComparator()

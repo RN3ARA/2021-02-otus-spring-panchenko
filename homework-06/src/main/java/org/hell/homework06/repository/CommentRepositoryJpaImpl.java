@@ -3,7 +3,6 @@ package org.hell.homework06.repository;
 import org.hell.homework06.model.Comment;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -53,7 +52,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
     public long countByBookId(long bookId) {
         TypedQuery<Long> query = entityManager.createQuery(
                 "select count(c) from Comment c " +
-                "where c.bookId = :bookId", Long.class);
+                "where c.book.id = :bookId", Long.class);
         query.setParameter("bookId", bookId);
         return query.getSingleResult();
     }

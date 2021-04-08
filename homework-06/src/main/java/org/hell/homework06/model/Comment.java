@@ -1,14 +1,14 @@
 package org.hell.homework06.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+//@Data
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -16,14 +16,23 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "book_id")
-    private long bookId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     @Column(name = "text")
     private String text;
 
-    public Comment(long bookId, String text) {
-        this.bookId = bookId;
+    public Comment(Book book, String text) {
+        this.book = book;
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                '}';
     }
 }
