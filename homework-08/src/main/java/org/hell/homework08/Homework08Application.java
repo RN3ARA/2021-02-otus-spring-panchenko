@@ -1,7 +1,8 @@
-package org.hell.homework07;
+package org.hell.homework08;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
 public class Homework08Application {

@@ -1,42 +1,42 @@
-package org.hell.homework07.shell;
+package org.hell.homework08.shell;
 
 import lombok.RequiredArgsConstructor;
-import org.hell.homework07.model.Author;
-import org.hell.homework07.model.Book;
-import org.hell.homework07.model.Comment;
-import org.hell.homework07.model.Genre;
-import org.hell.homework07.service.*;
+import org.hell.homework08.model.Author;
+import org.hell.homework08.model.Book;
+import org.hell.homework08.model.Comment;
+import org.hell.homework08.model.Genre;
+import org.hell.homework08.service.*;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class Homework07ApplicationCommands {
+public class Homework08ApplicationCommands {
 
     private final BookService bookService;
     private final AuthorService authorService;
-    private final GenreService genreService;
-    private final CommentService commentService;
+    /*private final GenreService genreService;
+    private final CommentService commentService;*/
 
     @ShellMethod(key = {"insert-book"}, value = "Insert book into table")
     public String insertBook(@ShellOption(defaultValue = "First Name") String authorFirstName,
                              @ShellOption(defaultValue = "Last Name") String authorLastName,
                              @ShellOption(defaultValue = "Untitled") String title,
                              @ShellOption(defaultValue = "Unknown") String genre) {
-        long id = bookService.save(new Book(new Author(authorFirstName, authorLastName), title, new Genre(genre)))
-                .getId();
-        return String.format("Inserted book with id %d", id);
+        Book book = new Book(authorFirstName, authorLastName, title, genre);
+        String id = bookService.save(book).getId();
+        return String.format("Inserted book with id %s", id);
     }
 
     @ShellMethod(key = {"delete-book"}, value = "Delete book from table")
     public void deleteBook(@ShellOption(defaultValue = "0") String id) {
-        bookService.deleteById(Long.parseLong(id));
+        bookService.deleteById(id);
     }
 
     @ShellMethod(key = {"get-book"}, value = "Get book from table by its Id")
     public String getBook(@ShellOption(defaultValue = "0") String id) {
-        return bookService.findById(Long.parseLong(id)).toString();
+        return bookService.findById(id).toString();
     }
 
     @ShellMethod(key = {"get-all-books"}, value = "Get all books from table")
@@ -47,7 +47,7 @@ public class Homework07ApplicationCommands {
     @ShellMethod(key = {"update-book"}, value = "Update book in table")
     public String updateBook(@ShellOption(defaultValue = "0") String id,
                              @ShellOption(defaultValue = "Untitled") String title) {
-        Book bookForUpdate = bookService.findById(Long.parseLong(id));
+        Book bookForUpdate = bookService.findById(id);
         if (bookForUpdate != null) {
             bookForUpdate.setTitle(title);
             bookService.update(bookForUpdate);
@@ -61,7 +61,7 @@ public class Homework07ApplicationCommands {
         return String.valueOf(bookService.count());
     }
 
-    @ShellMethod(key = {"insert-author"}, value = "Insert author into table")
+    /*@ShellMethod(key = {"insert-author"}, value = "Insert author into table")
     public String insertAuthor(@ShellOption(defaultValue = "First Name") String firstName,
                              @ShellOption(defaultValue = "Last Name") String lastName) {
         long id = authorService.save(new Author(firstName, lastName))
@@ -72,19 +72,24 @@ public class Homework07ApplicationCommands {
     @ShellMethod(key = {"delete-author"}, value = "Delete author from table")
     public void deleteAuthor(@ShellOption(defaultValue = "0") String id) {
         authorService.deleteById(Long.parseLong(id));
-    }
+    }*/
 
     @ShellMethod(key = {"get-author"}, value = "Get author from table by its Id")
     public String getAuthor(@ShellOption(defaultValue = "0") String id) {
-        return authorService.findById(Long.parseLong(id)).toString();
+        return authorService.findById(id).toString();
     }
 
     @ShellMethod(key = {"get-all-authors"}, value = "Get all authors from table")
     public String getAllAuthors() {
-        return authorService.findAll().toString();
+        return authorService.findAllAuthors().toString();
     }
 
-    @ShellMethod(key = {"update-author"}, value = "Update author in table")
+    @ShellMethod(key = {"get-book-authors"}, value = "Get book authors from table by its id")
+    public String getBookAuthors(@ShellOption(defaultValue = "0") String bookId) {
+        return authorService.findBookAuthors(bookId).toString();
+    }
+
+    /*@ShellMethod(key = {"update-author"}, value = "Update author in table")
     public String updateAuthor(@ShellOption(defaultValue = "0") String id,
                              @ShellOption(defaultValue = "First Name") String firstName,
                              @ShellOption(defaultValue = "Last Name") String lastName) {
@@ -194,5 +199,5 @@ public class Homework07ApplicationCommands {
     public String countComments(@ShellOption(defaultValue = "0") String id) {
         return String.valueOf(commentService.countByBookId(Long.parseLong(id)));
     }
-
+*/
 }
