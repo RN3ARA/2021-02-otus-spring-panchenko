@@ -1,8 +1,6 @@
 package org.hell.homework09.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,4 +20,5 @@ public class Genre {
     public Genre(String name) {
         this.name = name;
     }
+
 }
