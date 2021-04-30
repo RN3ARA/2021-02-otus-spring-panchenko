@@ -6,8 +6,7 @@ import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -26,8 +25,4 @@ public class Author {
         this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return firstName + " " + lastName;
-    }
 }

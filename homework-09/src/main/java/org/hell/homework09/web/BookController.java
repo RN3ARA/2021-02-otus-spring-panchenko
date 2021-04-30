@@ -5,6 +5,7 @@ import org.hell.homework09.service.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,7 +38,7 @@ public class BookController {
     }
 
     @PostMapping("/edit")
-    public String saveBook(Book book, Model model) {
+    public String saveBook(Book book) {
         System.out.println(book.getAuthor());
         /*Book updatedBook = bookService.update(book);
         model.addAttribute(updatedBook);*/
