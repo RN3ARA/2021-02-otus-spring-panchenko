@@ -39,6 +39,7 @@ public class BookController {
 
     @PostMapping("/edit")
     public String saveBook(Book book) {
+при сохранении Book приходит в контроллер с null-значениями у автора по неизвестным причинам.
         System.out.println(book.getAuthor());
         /*Book updatedBook = bookService.update(book);
         model.addAttribute(updatedBook);*/
