@@ -24,21 +24,18 @@
     <h1>Book Info:</h1>
 
     <div class="row">
-        <label for="input-holder1">Author First Name:</label>
-        <input id="input-holder1" name="firstname" type="text" th:value="${book.author.firstName}" value="John"/>
+        <select th:field="*{book.author.id}">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}" th:text="${author}"></option>
+        </select>
     </div>
 
-        <div class="row">
-            <label for="input-holder2">Author Last Name:</label>
-            <input id="input-holder2" name="lastname" type="text" th:value="${book.author.lastName}" value="Smith"/>
-        </div>
+    <div class="row">
+        <label for="input-holder">Title:</label>
+        <input id="input-holder" name="title" type="text" th:value="${book.title}" value="Untitled"/>
+    </div>
 
-            <div class="row">
-                <label for="input-holder3">Title:</label>
-                <input id="input-holder3" name="title" type="text" th:value="${book.title}" value="Untitled"/>
-            </div>
-
-<!--
+    <!--
             <div class="row">
                 <label for="genre">Genre:</label>
                 <input id="genre" name="genre" type="text" th:value="${book.genreName}" value="Unknown"/>

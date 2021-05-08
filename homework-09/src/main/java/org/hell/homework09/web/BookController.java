@@ -1,11 +1,11 @@
 package org.hell.homework09.web;
 
 import org.hell.homework09.model.Book;
+import org.hell.homework09.service.AuthorService;
 import org.hell.homework09.service.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,9 +15,11 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final AuthorService authorService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @GetMapping("/")
@@ -34,15 +36,16 @@ public class BookController {
             throw new NotFoundException();
         }
         model.addAttribute("book", book);
+        model.addAttribute("authors", authorService.findAll());
         return "edit";
     }
 
     @PostMapping("/edit")
-    public String saveBook(Book book) {
-// при сохранении Book приходит в контроллер с null-значениями у автора по неизвестным причинам
-        System.out.println(book.getAuthor());
-        /*Book updatedBook = bookService.update(book);
-        model.addAttribute(updatedBook);*/
+    public String saveBook(Book book, Model model) {
+        //Похоже это криво и так нельзя
+        book.setAuthor(authorService.findById(book.getAuthor().getId()));
+        Book updatedBook = bookService.update(book);
+        model.addAttribute(updatedBook);
         return "redirect:/";
     }
 }
