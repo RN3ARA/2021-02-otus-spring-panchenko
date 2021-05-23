@@ -1,5 +1,6 @@
 package org.hell.homework09.service;
 
+import lombok.AllArgsConstructor;
 import org.hell.homework09.model.Author;
 import org.hell.homework09.model.Genre;
 import org.hell.homework09.repository.BookRepository;
@@ -9,18 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;
     private final AuthorServiceImpl authorService;
     private final GenreServiceImpl genreService;
-
-    public BookServiceImpl(BookRepository repository, AuthorServiceImpl authorService, GenreServiceImpl genreService) {
-        this.repository = repository;
-        this.authorService = authorService;
-        this.genreService = genreService;
-    }
 
     @Override
     public Book findById(long id) {
