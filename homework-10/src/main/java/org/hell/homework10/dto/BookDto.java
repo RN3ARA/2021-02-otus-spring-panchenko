@@ -8,8 +8,6 @@ import org.hell.homework10.model.Book;
 import org.hell.homework10.model.Genre;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class BookDto {
     private long Id;
     private long authorId;
@@ -19,17 +17,4 @@ public class BookDto {
     private long genreId;
     private String genreName;
 
-    public static BookDto toDto(Book book) {
-        return new BookDto(book.getId(), book.getAuthor().getId(), book.getAuthor().getFirstName(), book.getAuthor().getLastName(),
-                book.getTitle(), book.getGenre().getId(), book.getGenre().getName());
-    }
-
-    public static Book toDomainObject(BookDto dto) {
-        Book book = new Book();
-        book.setId(dto.getId());
-        book.setAuthor(new Author(dto.getAuthorId(), dto.getAuthorFirstName(), dto.getAuthorLastName()));
-        book.setTitle(dto.getTitle());
-        book.setGenre(new Genre(dto.getGenreId(), dto.genreName));
-        return book;
-    }
 }
