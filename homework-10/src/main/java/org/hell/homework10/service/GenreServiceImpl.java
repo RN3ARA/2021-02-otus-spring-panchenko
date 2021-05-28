@@ -1,11 +1,9 @@
 package org.hell.homework10.service;
 
-import org.hell.homework10.repository.GenreRepository;
 import org.hell.homework10.model.Genre;
+import org.hell.homework10.repository.GenreRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -17,21 +15,18 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    @Transactional
     public Genre findById(long id) {
         return repository.findById(id)
                 .orElse(null);
     }
 
     @Override
-    @Transactional
     public Genre findByName(String name) {
         return repository.findByName(name);
     }
 
     @Override
-    @Transactional
-    public List<Genre> findAll() {
+    public Iterable<Genre> findAll() {
         return repository.findAll();
     }
 
@@ -54,7 +49,6 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    @Transactional
     public long count() {
         return repository.count();
     }

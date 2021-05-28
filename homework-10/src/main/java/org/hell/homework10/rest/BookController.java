@@ -50,6 +50,10 @@ public class BookController {
 
     @DeleteMapping("/api/books/{id}")
     public void deleteBookById(@PathVariable("id") long id) {
+        Book book = bookService.findById(id);
+        if (book == null) {
+            throw new NotFoundException();
+        }
         bookService.deleteById(id);
     }
 
@@ -64,7 +68,7 @@ public class BookController {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFound(NotFoundException ex) {
+    public ResponseEntity<String> handleNotFound() {
         return ResponseEntity.badRequest().body("Could not find");
     }
 }
