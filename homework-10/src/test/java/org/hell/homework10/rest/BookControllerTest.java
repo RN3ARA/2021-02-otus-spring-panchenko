@@ -79,9 +79,9 @@ class BookControllerTest {
 
     @Test
     void shouldReturnExpectedErrorWhenBookNotFound() throws Exception {
-        given(service.findById(1)).willReturn(null);
+        given(service.findById(1L)).willReturn(null);
 
-        mvc.perform(get("/api/books/3"))
+        mvc.perform(get("/api/books/1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(ERROR_MESSAGE));
     }
