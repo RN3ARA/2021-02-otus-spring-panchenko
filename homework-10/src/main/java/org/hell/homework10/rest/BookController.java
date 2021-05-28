@@ -1,5 +1,6 @@
 package org.hell.homework10.rest;
 
+import lombok.AllArgsConstructor;
 import org.hell.homework10.converter.BookDtoToEntityConverter;
 import org.hell.homework10.converter.BookEntityToDtoConverter;
 import org.hell.homework10.dto.BookDto;
@@ -12,18 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestController
 public class BookController {
 
     private final BookService bookService;
     private final BookEntityToDtoConverter bookEntityToDtoConverter;
     private final BookDtoToEntityConverter bookDtoToEntityConverter;
-
-    public BookController(BookService bookService, BookEntityToDtoConverter bookEntityToDtoConverter, BookDtoToEntityConverter bookDtoToEntityConverter) {
-        this.bookService = bookService;
-        this.bookEntityToDtoConverter = bookEntityToDtoConverter;
-        this.bookDtoToEntityConverter = bookDtoToEntityConverter;
-    }
 
     @GetMapping("/api/books")
     public List<BookDto> getAllBooks() {
