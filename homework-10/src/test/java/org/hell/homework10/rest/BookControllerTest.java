@@ -7,17 +7,14 @@ import org.hell.homework10.dto.BookDto;
 import org.hell.homework10.model.Author;
 import org.hell.homework10.model.Book;
 import org.hell.homework10.model.Genre;
-import org.hell.homework10.repository.BookRepository;
 import org.hell.homework10.service.BookService;
 import org.junit.jupiter.api.Test;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
@@ -44,9 +41,6 @@ class BookControllerTest {
     @MockBean
     private BookEntityToDtoConverter bookEntityToDtoConverter;
 
-    @MockBean
-    private BookRepository repository;
-
     @Autowired
     private ObjectMapper mapper;
 
@@ -58,25 +52,26 @@ class BookControllerTest {
     @Test
     void shouldReturnCorrectBookById() throws Exception {
         Book book = new Book(1, new Author(1, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME), "Nomads", new Genre(1, EXISTING_GENRE_NAME));
-        when(repository.findById(1)).thenReturn(java.util.Optional.of(book));
         when(service.findById(1)).thenReturn(book);
 
-        BookDto expectedResult = bookEntityToDtoConverter.convert(book);
+        BookDto expectedResult = createBookDto();
+        when(bookEntityToDtoConverter.convert(book)).thenReturn(expectedResult);
 
-        mvc.perform(get("/api/books/1"));
-                /*.andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(expectedResult)));*/
+        mvc.perform(get("/api/books/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
     }
 
-    /*@Test
+    @Test
     void shouldReturnCorrectBooksList() throws Exception {
         Book book = new Book(1, new Author(1, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME), "Nomads", new Genre(1, EXISTING_GENRE_NAME));
         List<Book> books = List.of(book);
-        given(service.findAll()).willReturn(books);
+        when(service.findAll()).thenReturn(books);
 
-        List<BookDto> expectedResult = books.stream()
-                .map(bookEntityToDtoConverter::convert)
-                .collect(Collectors.toList());
+        List<BookDto> expectedResult = List.of(createBookDto());
+        when(bookEntityToDtoConverter.convert(books.get(0)))
+                .thenReturn(expectedResult.get(0));
+
         mvc.perform(get("/api/books"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
@@ -94,10 +89,11 @@ class BookControllerTest {
     @Test
     void shouldCorrectSaveNewBook() throws Exception {
         Book book = new Book(new Author(1, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME), "Nomads", new Genre(1, EXISTING_GENRE_NAME));
-        book.setId(1);
-        given(service.save(any())).willReturn(book);
-        String expectedResult = mapper.writeValueAsString(bookEntityToDtoConverter.convert(book));
+        when(service.save(any())).thenReturn(book);
+        BookDto bookDto = createBookDto();
+        when(bookEntityToDtoConverter.convert(book)).thenReturn(bookDto);
 
+        String expectedResult = mapper.writeValueAsString(bookDto);
         mvc.perform(post("/api/books").contentType(APPLICATION_JSON)
                 .content(expectedResult))
                 .andExpect(status().isOk())
@@ -106,8 +102,38 @@ class BookControllerTest {
 
     @Test
     void shouldCorrectDeleteBook() throws Exception {
+        Book book = new Book(new Author(1, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME), "Nomads", new Genre(1, EXISTING_GENRE_NAME));
+        when(service.findById(1)).thenReturn(book);
         mvc.perform(delete("/api/books/1"))
                 .andExpect(status().isOk());
-        verify(service, times(1)).deleteById(1L);
-    }*/
+        verify(service, times(1)).deleteById(1);
+    }
+
+    @Test
+    void shouldCorrectUpdateBook() throws Exception {
+        Book book = new Book(new Author(1, EXISTING_AUTHOR_FIRST_NAME, EXISTING_AUTHOR_LAST_NAME), "Nomads", new Genre(1, EXISTING_GENRE_NAME));
+        when(service.findById(1)).thenReturn(book);
+        when(service.update(book)).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
+        BookDto bookDto = createBookDto();
+        when(bookDtoToEntityConverter.convert(bookDto)).thenReturn(book);
+        when(bookEntityToDtoConverter.convert(book)).thenReturn(bookDto);
+
+        String expectedResult = mapper.writeValueAsString(bookDto);
+        mvc.perform(put("/api/books/1").contentType(APPLICATION_JSON)
+                .content(expectedResult))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedResult));
+    }
+
+    private BookDto createBookDto() {
+        BookDto bookDto = new BookDto();
+        bookDto.setId(1);
+        bookDto.setAuthorId(1);
+        bookDto.setAuthorFirstName(EXISTING_AUTHOR_FIRST_NAME);
+        bookDto.setAuthorLastName(EXISTING_AUTHOR_LAST_NAME);
+        bookDto.setTitle("Nomads");
+        bookDto.setGenreId(1);
+        bookDto.setGenreName(EXISTING_GENRE_NAME);
+        return bookDto;
+    }
     }
