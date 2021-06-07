@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form" th:action="@{/edit(id=${book.id})}" th:method="post" action="edit.html">
+    <h1>Book Info:</h1>
+
+    <div class="row">
+        <select th:field="*{book.authorId}">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}" th:text="${author}"></option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="input-holder">Title:</label>
+        <input id="input-holder" name="title" type="text" th:value="${book.title}" value="Untitled"/>
+    </div>
+
+    <div class="row">
+        <select th:field="*{book.genreId}">
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}" th:text="${genre.name}"></option>
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+</body>
+</html>
