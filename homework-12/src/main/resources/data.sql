@@ -11,4 +11,4 @@ values ((select id from authors where first_name = 'Ilyas' and last_name = 'Esem
 
 insert into comments(book_id, text) values(1, 'Amazing.');
 
-insert into users(username, password) values('admin', '$2a$10$NePRk/hV482CEJXLDh5fj.SIhKmykf8dUkEiZfP6tGEu4CHS1zM3W');
+insert into users(username, password) values('admin', '123456');
