@@ -1,5 +1,7 @@
 package org.hell.homework12.web;
 
+import org.hell.homework12.converter.BookDtoToEntityConverter;
+import org.hell.homework12.converter.BookEntityToDtoConverter;
 import org.hell.homework12.dto.BookDto;
 import org.hell.homework12.model.Book;
 import org.hell.homework12.service.AuthorService;
@@ -11,28 +13,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Controller
-public class BookController {
+public class BookPageController {
 
     private final BookService bookService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final BookEntityToDtoConverter bookEntityToDtoConverter;
+    private final BookDtoToEntityConverter bookDtoToEntityConverter;
 
-    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
+    public BookPageController(BookService bookService, AuthorService authorService, GenreService genreService, BookEntityToDtoConverter bookEntityToDtoConverter, BookDtoToEntityConverter bookDtoToEntityConverter) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.bookEntityToDtoConverter = bookEntityToDtoConverter;
+        this.bookDtoToEntityConverter = bookDtoToEntityConverter;
     }
 
     @GetMapping("/")
-    public String listPage(Model model) {
-        List<BookDto> books = bookService.findAll().stream()
-                .map(BookDto::toDto)
-                .collect(Collectors.toList());
-        model.addAttribute("books", books);
+    public String listPage() {
         return "list";
     }
 
@@ -42,15 +41,15 @@ public class BookController {
         if (book == null) {
             throw new NotFoundException();
         }
-        model.addAttribute("book", BookDto.toDto(book));
+        model.addAttribute("book", bookEntityToDtoConverter.convert(book));
         model.addAttribute("authors", authorService.findAll());
         model.addAttribute("genres", genreService.findAll());
         return "edit";
     }
 
-@PostMapping("/edit")
-    public String updateBook(BookDto book, Model model) {
-        Book updatedBook = bookService.update(BookDto.toDomainObject(book));
+    @PostMapping("/edit")
+    public String updateBook(BookDto dto, Model model) {
+        Book updatedBook = bookService.update(bookDtoToEntityConverter.convert(dto));
         model.addAttribute(updatedBook);
         return "redirect:/";
     }
@@ -62,7 +61,7 @@ public class BookController {
 
     @PostMapping("/save")
     public String saveBook(BookDto bookDto) {
-        bookService.save(BookDto.toDomainObject(bookDto));
+        bookService.save(bookDtoToEntityConverter.convert(bookDto));
         return "redirect:/";
     }
 

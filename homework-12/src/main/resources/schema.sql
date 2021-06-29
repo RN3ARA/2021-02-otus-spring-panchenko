@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS authors;
 DROP TABLE IF EXISTS genres;
-DROP TABLE IF EXISTS users;
 
 CREATE TABLE authors
 (
@@ -29,11 +28,4 @@ CREATE TABLE comments
     id   BIGSERIAL PRIMARY KEY,
     reply VARCHAR(250) NOT NULL,
     book_id  BIGINT      NOT NULL REFERENCES books (id) ON DELETE CASCADE
-);
-
-CREATE TABLE users
-(
-    id         BIGSERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password  VARCHAR(60) NOT NULL
 );

@@ -10,5 +10,3 @@ values ((select id from authors where first_name = 'Ilyas' and last_name = 'Esem
         (select id from genres where name = 'historical'));
 
 insert into comments(book_id, text) values(1, 'Amazing.');
-
-insert into users(username, password) values('admin', '123456');
