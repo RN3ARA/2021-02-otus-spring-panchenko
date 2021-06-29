@@ -1,31 +1,32 @@
 package org.hell.homework12.security;
 
-import lombok.*;
+import org.hell.homework12.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.util.Collection;
-import java.util.Collections;
 
-@Data
-@NoArgsConstructor
-@Entity
-@Table(name = "users")
-public class User implements UserDetails {
+public class AuthorizedUserDetails implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private User user;
 
-    private String username;
-
-    private String password;
+    public AuthorizedUserDetails(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
     }
 
     @Override
@@ -47,5 +48,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

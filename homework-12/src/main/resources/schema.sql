@@ -29,3 +29,10 @@ CREATE TABLE comments
     reply VARCHAR(250) NOT NULL,
     book_id  BIGINT      NOT NULL REFERENCES books (id) ON DELETE CASCADE
 );
+
+CREATE TABLE users
+(
+    id   BIGSERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(60) NOT NULL
+);
