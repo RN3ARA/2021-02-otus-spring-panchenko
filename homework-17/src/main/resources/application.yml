@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    initialization-mode: never
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/library
+    username: library
+    password: qAF219x
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  file:
+    path: log
