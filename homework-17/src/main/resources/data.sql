@@ -9,4 +9,4 @@ values ((select id from authors where first_name = 'Ilyas' and last_name = 'Esem
         'Nomads',
         (select id from genres where name = 'historical'));
 
-insert into comments(book_id, text) values(1, 'Amazing.');
+insert into comments(book_id, reply) values(1, 'Amazing.');
